@@ -1,0 +1,3 @@
+from components.losses.cross_entropy import CrossEntropyLoss
+
+from components.losses.multi_box_loss import MultiBoxLoss

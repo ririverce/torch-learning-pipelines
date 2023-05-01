@@ -1,0 +1,5 @@
+datasets/
+results/
+external/
+**/__pycache__/
+venv/
