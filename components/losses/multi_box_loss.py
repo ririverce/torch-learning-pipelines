@@ -57,4 +57,9 @@ class MultiBoxLoss(torch.nn.Module):
         loc_loss = (loc_loss_linear + loc_loss_square) * loc_loss_mask
         loc_loss = loc_loss.sum(-1).sum(-1)
         loc_loss = loc_loss / num_positive_loc
-        return conf_loss, loc_loss
+        """*******************
+        ***** total loss *****
+        *******************"""
+        loss = conf_loss + loc_loss
+        loss = loss.mean()
+        return loss

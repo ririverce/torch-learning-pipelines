@@ -2,6 +2,7 @@ import copy
 import numpy as np
 import cv2
 
+
 class AnchorBoxConverter:
 
     def __init__(self, num_classes, default_box, image_size,
@@ -128,11 +129,11 @@ class AnchorBoxConverter:
                 ] for box in data["bboxes"]
             ] for data in batch_data
         ]
-        batch_images = []
+        batch_inputs = []
         for data in batch_data:
             image = cv2.resize(data["image"], self._image_size)
-            batch_images.append(image)
-        batch_images = np.transpose(batch_images, (0, 3, 1, 2))
+            batch_inputs.append(image)
+        batch_inputs = np.transpose(batch_inputs, (0, 3, 1, 2))
         iou_matrix_list = self._calc_iou_matrix(batch_bboxes)
         matched_pair_list =  self._calc_matched_pair(iou_matrix_list)
         iou_matrix_list = self._remove_matched_iou(iou_matrix_list,
@@ -146,8 +147,8 @@ class AnchorBoxConverter:
                                    surrounding_pair_list)        
         batch_data = {
             "images": [data["image"] for data in batch_data],
-            "input" : np.array(batch_images).astype(np.float32),
-            "conf"  : np.array(batch_conf).astype(np.float32),
-            "loc"   : np.array(batch_loc).astype(np.float32),
+            "input" : batch_inputs.astype(np.float32),
+            "conf"  : batch_conf.astype(np.float32),
+            "loc"   : batch_loc.astype(np.float32)
         }
         return batch_data

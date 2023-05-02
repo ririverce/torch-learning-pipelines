@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import copy
 
 
 class BDD100KDetectionLoader:
@@ -28,6 +29,8 @@ class BDD100KDetectionLoader:
         # prepare train data
         image_dir = os.path.join(self._root_dir, self._TRAIN_IMAGE_DIR)
         label_path = os.path.join(self._root_dir, self._TRAIN_LABEL_PATH)
+        #image_dir = os.path.join(self._root_dir, self._VAL_IMAGE_DIR)
+        #label_path = os.path.join(self._root_dir, self._VAL_LABEL_PATH)
         with open(label_path, "r") as f:
             meta_list = json.load(f)
         dataset = []
@@ -64,7 +67,7 @@ class BDD100KDetectionLoader:
         self._val_dataset = dataset[int(len(dataset)*0.8):]
 
     def get_train_dataset(self):
-        return self._train_dataset
+        return copy.deepcopy(self._train_dataset)
 
     def get_val_dataset(self):
-        return self._val_dataset
+        return copy.deepcopy(self._val_dataset)

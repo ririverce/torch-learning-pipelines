@@ -1,4 +1,6 @@
+import copy
 import cv2
+
 
 class Preprocessor:
 
@@ -21,9 +23,11 @@ class Preprocessor:
         batch_data = self._converter.convert(batch_data)
         return batch_data
 
-    def process(self, batch_data):
+    def process(self, input_batch_data, no_augment=False):
+        batch_data = copy.deepcopy(input_batch_data)
         batch_data = self._load_image(batch_data)
-        batch_data = self._augment(batch_data)
+        if no_augment:
+            batch_data = self._augment(batch_data)
         batch_data = [data for data in batch_data if len(data["labels"]) > 0]
         batch_data = self._convert(batch_data)
         return batch_data
